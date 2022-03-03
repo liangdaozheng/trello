@@ -1,44 +1,44 @@
 import {
-  Model,
-  PrimaryKey,
   Table,
-  AutoIncrement,
   Column,
+  Model,
+  AutoIncrement,
   AllowNull,
-  Unique,
   DataType,
-  UpdatedAt,
+  Unique,
+  PrimaryKey,
   CreatedAt,
-
+  UpdatedAt
 } from 'sequelize-typescript';
-const crypto=require('crypto');
+import crypto from "crypto";
 
 @Table({
-  tableName:'User'
+  tableName: 'User',
 })
-export class User extends Model<User>{
+export class User extends Model<User> {
+
   @PrimaryKey
   @AutoIncrement
   @Column
-  id:number;
-  @AllowNull(false)
-  @Unique
-  @Column({
-    type:DataType.STRING(50)
-  })
-  name:string;
+  id: number;
 
-  set password(val:string){
-    let md5 = crypto.createHash('md5');
-    let newPassword = md5.update(val).digest('hex');
-    this.setDataValue('password',newPassword);
-  };
+  @AllowNull(false)
+  @Unique(true)
+  @Column({
+      type: DataType.STRING(50)
+  })
+  name: string;
+
+  @Column
+  set password(val: string) {
+      let md5 = crypto.createHash('md5');
+      let newPassword = md5.update(val).digest('hex');
+      this.setDataValue('password', newPassword);
+  }
 
   @CreatedAt
-  createdAt:Date;
-  
+  createdAt: Date;
+
   @UpdatedAt
-  updateAt:Date;
+  updatedAt: Date;
 }
-
-
