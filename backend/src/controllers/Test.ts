@@ -12,7 +12,7 @@ import {
 import {Context} from 'koa';
 import {IsNumberString, IsNotEmpty} from 'class-validator';
 import Boom from '@hapi/Boom';
-// import authorization from '../middlewares/authorization';
+import authorization from '../middlewares/authorization';
 
 class GetUsersQuery {
 
@@ -96,13 +96,13 @@ class TestController {
         return '传过来的query：' + JSON.stringify(q);
     }
 
-    // @Get('/auth')
-    // @Flow([authorization])
-    // async auth(
-    //     @Ctx() ctx: Context
-    // ) {
-    //     return '不登录看不到';
-    // }
+    @Get('/auth')
+    @Flow([authorization])
+    async auth(
+        @Ctx() ctx: Context
+    ) {
+        return '不登录看不到';
+    }
 
     @Get('/noauth')
     async noAuth() {

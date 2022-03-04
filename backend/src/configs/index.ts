@@ -14,6 +14,9 @@ const configs={
       host:"localhost",
       port:8080
     },
+    jwt: {
+        privateKey: 'liang'
+    },
     database:databaseConfig.development as IDatabaseConfig
   },
   test:{
@@ -21,12 +24,18 @@ const configs={
       host:"localhost",
       port:8080
     },
+    jwt: {
+        privateKey: 'liang'
+    },
     database:databaseConfig.test as IDatabaseConfig
   },
   production:{
     server:{
       host:"localhost",
       port:8080
+    },
+    jwt: {
+        privateKey: 'liang'
     },
     database:databaseConfig.production as IDatabaseConfig
   },
