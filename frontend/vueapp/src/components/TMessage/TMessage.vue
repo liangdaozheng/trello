@@ -22,6 +22,7 @@ export default {
       closed:false,
       duration:1000,
       timer:null,
+      onClose:null,
     };
   },
   mounted () {
@@ -34,6 +35,9 @@ export default {
   methods: {
     close() {
       this.closed=true;
+      if(typeof this.onClose === 'function'){
+        this.onClose();
+      }
     }
   },
 };

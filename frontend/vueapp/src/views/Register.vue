@@ -47,12 +47,11 @@
   </div>
 </template>
 <script>
-import TMessage from '@/components/TMessage'
 export default {
   name:'Register',
-  components: {
-    TMessage,
-  },
+  // components: {
+  //   TMessage,
+  // },
   data() {
     return {
       user: {
@@ -66,10 +65,13 @@ export default {
     registerSubmit() {
       // 必要的验证
       if(this.user.name.trim() === '' || this.user.password.trim() === ''){
-        return alert('用户和密码不能为空');
+        // return alert('用户和密码不能为空');
+        // return TMessage('用户和密码不能为空');
+        return this.$message.error('用户和密码不能为空');
       }
       if(this.user.password !== this.user.rePassword){
-        return alert('两次密码不一致');
+        // return alert('两次密码不一致');
+        return this.$message.error('两次密码不一致');
       }
       console.log(this.user);
       
