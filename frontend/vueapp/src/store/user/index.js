@@ -17,6 +17,10 @@ export default {
       } catch (error) {
         
       }
+    },
+    removeUserInfo: (state,data)=>{
+      state.info=null;
+      localStorage.removeItem('user');
     }
   },
   actions: {
@@ -37,6 +41,9 @@ export default {
         throw error;
       }
     },
+    logout:async ({commit})=>{
+      commit('removeUserInfo')
+    }
   },
   
 }
