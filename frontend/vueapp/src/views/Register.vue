@@ -39,7 +39,8 @@
           <div>
             <input type="submit" class="btn btn-success" value="注册" />
             <span class="signin-signup-separator">或者</span>
-            <input type="button" class="btn" value="登录" />
+            <!-- <input type="button" class="btn" value="登录" /> -->
+            <router-link :to="{name:'Login'}" tag="button" class="btn">登录</router-link>
           </div>
         </form>
       </div>
@@ -62,7 +63,7 @@ export default {
     }
   },
   methods: {
-    registerSubmit() {
+    async registerSubmit() {
       // 必要的验证
       if(this.user.name.trim() === '' || this.user.password.trim() === ''){
         // return alert('用户和密码不能为空');
@@ -73,7 +74,13 @@ export default {
         // return alert('两次密码不一致');
         return this.$message.error('两次密码不一致');
       }
-      console.log(this.user);
+      // console.log(this.user);
+      try {
+        await this.$store.dispatch('user/register',{...this.user});
+        this.$router.push({name:'Login'});
+      } catch (error) {
+        
+      }
       
     }
   },
