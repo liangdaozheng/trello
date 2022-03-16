@@ -13,7 +13,7 @@ import {
 import {Context} from 'koa'
 import Boom from '@hapi/Boom'
 import authorization from '../middlewares/authorization'
-import { Board as BoardModel } from '../models/Board';
+// import { Board as BoardModel } from '../models/Board';
 import {PostAddBoardBody,PutUpdateBoardBody} from '../validators/Board';
 @Controller('/board')
 @Flow([authorization])
