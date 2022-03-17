@@ -39,7 +39,7 @@ export class BoardController {
     let where ={
       userId:ctx.userInfo.id
     };
-    let boards = await BoardModel.find({where})
+    let boards = await BoardModel.findAll({where})
     return boards
 
   }
