@@ -39,3 +39,11 @@ export const login= data=>{
     data,
   })
 };
+
+// 面板
+export const getBoards = () =>{
+  return axios({
+    method:"get",
+    url:'/board',
+  })
+}
