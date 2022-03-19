@@ -1,11 +1,11 @@
 <template>
   <div class="list-wrap" :class="{'list-adding':false}">
-    <div class="list-placeholder"></div>
+    <div class="list-placeholder" ref="listPlaceholder"></div>
 
-    <div class="list">
-      <div class="list-header">
-        <textarea class="form-field-input">{{data.name}}</textarea>
-        <div class="extras-menu">
+    <div class="list" ref="list">
+      <div class="list-header" ref="listHeader">
+        <textarea class="form-field-input" ref="newBoardListName" @mousedown.prevent>{{ data.name }}</textarea>
+        <div class="extras-menu" @mousedown.prevent>
           <span class="icon icon-more"></span>
         </div>
       </div>
@@ -80,8 +80,92 @@ export default {
   props: {
     data: {
       type: Object,
-      default: []
     },
   },
+  data() {
+    return {
+      drag: {
+        isDown:false,
+        isDrag:false,
+        downClientX:0,
+        downClientY:0,
+        downElementX:0,
+        downElementY:0,
+      }
+    }
+  },
+  mounted () {
+    this.$refs.listHeader.addEventListener('mousedown',this.dragDown);
+    document.addEventListener('mousemove',this.dragMove);
+    document.addEventListener('mouseup',this.dragUp);
+  },
+  methods: {
+    dragDown(e) {
+      this.drag.isDown = true;
+      this.drag.downClientX = e.clientX;
+      this.drag.downClientY = e.clientY;
+      let pos = this.$refs.list.getBoundingClientRect();
+      this.drag.downElementX = pos.x;
+      this.drag.downElementY = pos.y;
+
+    },
+    dragMove(e) {
+      if(this.drag.isDown){
+        let listElement = this.$refs.list;
+        let x = e.clientX - this.drag.downClientX;
+        let y = e.clientY - this.drag.downClientY;
+        // 触发拖拽的条件
+        if(x > 10 || y > 10){
+          if(!this.drag.isDrag){
+            this.drag.isDrag = true; 
+            this.$refs.listPlaceholder.style.height = listElement.offsetHeight + 'px';
+            listElement.style.position = 'absolute';
+            listElement.style.zIndex = 99999;
+            listElement.style.transform = 'rotate(5deg)';
+            document.body.appendChild(listElement);
+            this.$emit('dragStart',{
+              component:this
+            });
+          };
+          
+          listElement.style.left = this.drag.downElementX + x + 'px';
+          listElement.style.top = this.drag.downElementY + y + 'px';
+          this.$emit('dragMove',{
+              component:this,
+              x:e.clientX,
+              y:e.clientY,
+            });
+        }else{
+          // 点击的行为
+        }
+      }
+    },
+    dragUp(e) {
+      if(this.drag.isDown){
+        if(this.drag.isDrag){
+          let listElement = this.$refs.list;
+          listElement.style.position = 'relative';
+          listElement.style.zIndex = 0;
+          listElement.style.left = 0 ;
+          listElement.style.top = 0 ;
+          listElement.style.transform = 'rotate(0deg)';
+          this.$el.appendChild(listElement);
+          this.$refs.listPlaceholder.style.height = 0;
+
+          this.$emit('dragEnd',{
+              component:this
+            });
+        }else{
+          if(e.path.includes(this.$refs.newBoardListName)){
+            this.$refs.newBoardListName.select();
+          }
+        }
+        this.drag.isDown = this.drag.isDrag =false;
+
+      }
+    },
+
+  },
+
 }
 </script>
