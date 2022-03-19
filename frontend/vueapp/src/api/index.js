@@ -79,3 +79,15 @@ export const postList = (data) =>{
     data,
   })
 }
+// putList
+export const putList = (data) =>{
+  return axios({
+    method:"put",
+    url:'/list/'+ data.id,
+    data:{
+      boardId:data.boardId,
+      name:data.name,
+      order:data.order,
+    },
+  })
+}

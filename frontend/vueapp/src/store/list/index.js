@@ -14,8 +14,16 @@ export default {
     updateLists:(state,datas)=>{
       state.lists=[...state.lists,...datas];
     },
-    addList:(state,datas)=>{
-      state.lists=[...state.lists,datas];
+    addList:(state,data)=>{
+      state.lists=[...state.lists,data];
+    },
+    updateList:(state,data)=>{
+      state.lists=state.lists.map(list =>{
+        if(list.id === data.id){
+          return data
+        };
+        return list
+      });
     },
   },
   actions:{
@@ -36,6 +44,16 @@ export default {
       } catch (error) {
         throw error;
       }
-    }
+    },
+    editList: async ({commit},data)=>{
+      try {
+        let rs = await api.putList(data);
+        // console.log(rs.data);
+        commit('updateList',rs.data);
+        return rs;
+      } catch (error) {
+        throw error;
+      }
+    },
   }
 }

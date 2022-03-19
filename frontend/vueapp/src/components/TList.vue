@@ -1,10 +1,10 @@
 <template>
-  <div class="list-wrap" :class="{'list-adding':false}">
+  <div class="list-wrap list-wrap-content" :class="{'list-adding':false}" :data-order="data.order">
     <div class="list-placeholder" ref="listPlaceholder"></div>
 
     <div class="list" ref="list">
       <div class="list-header" ref="listHeader">
-        <textarea class="form-field-input" ref="newBoardListName" @mousedown.prevent>{{ data.name }}</textarea>
+        <textarea class="form-field-input" ref="newBoardListName" @mousedown.prevent @blur="editListName" >{{data.name}}</textarea>
         <div class="extras-menu" @mousedown.prevent>
           <span class="icon icon-more"></span>
         </div>
@@ -164,6 +164,17 @@ export default {
 
       }
     },
+    async editListName(){
+      let {value,innerHTML} = this.$refs.newBoardListName;
+      // console.log(val,)
+      if(innerHTML !== value){
+        await this.$store.dispatch('list/editList',{
+          boardId:this.data.boardId,
+          id:this.data.id,
+          name:value
+        })
+      }
+    }
 
   },
 

@@ -17,6 +17,9 @@
         v-for="list of lists"
         :key="list.id"
         :data="list"
+        @dragStart="dragStart"
+        @dragMove="dragMove"
+        @dragEnd="dragEnd"
         ></t-list>
         <!--无内容列表容器-->
         <div class="list-wrap no-content" :class="{'list-adding':listAdding}">
@@ -113,6 +116,64 @@ export default {
        } catch (error) {
          this.$refs.newListName.focus();
        }
+      }
+    },
+    dragStart(e){
+      let el = e.component.$el;
+      let board = el.parentNode;
+      let lists = [...board.querySelectorAll('.list-wrap-content')];
+      el._index = lists.findIndex(list => list === el);
+    },
+    dragMove(e){
+      let el = e.component.$el;
+      let board = el.parentNode;
+      let lists = [...board.querySelectorAll('.list-wrap-content')];
+      let currentIndex = lists.findIndex(list=>list === el);
+      lists.forEach((list,index)=>{
+        if(index !== currentIndex){
+          let clientRect = list.getBoundingClientRect();
+          if(
+            e.x >= clientRect.left
+            &&
+            e.x <= clientRect.right
+            && 
+            e.y >= clientRect.top
+            && 
+            e.y <= clientRect.bottom
+          ){
+            console.log('交换位置');
+            if(currentIndex < index){
+              board.insertBefore(el,list.nextElementSibling);
+            }else{
+              board.insertBefore(el,list)
+            }
+          }
+
+        }
+      })
+    },
+    async dragEnd(e){
+      let el = e.component.$el;
+      let board = el.parentNode;
+      let lists = [...board.querySelectorAll('.list-wrap-content')];
+      let currentIndex = lists.findIndex(list=>list === el);
+      if(el._index !== currentIndex){
+        let newOrder;
+        let prevOrder = lists[currentIndex -1] && parseFloat(lists[currentIndex - 1].dataset.order);
+        let nextOrder = lists[currentIndex +1] && parseFloat(lists[currentIndex + 1].dataset.order);
+        // console.log(prevOrder,nextOrder);
+        if(currentIndex === 0){
+          newOrder = nextOrder/2;
+        }else if(currentIndex === lists.length-1){
+          newOrder = prevOrder + 65535;
+        }else{
+          newOrder = prevOrder + (nextOrder - prevOrder)/2;
+        }
+        await this.$store.dispatch('list/editList',{
+          order:newOrder,
+          boardId:this.board.id,
+          id:e.component.data.id,
+        })
       }
     }
   },

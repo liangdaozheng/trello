@@ -84,7 +84,8 @@ export class BoardListController{
     boardList.name=name || boardList.name;
     boardList.order=order || boardList.order;
     await boardList.save();
-
+    // console.log(boardList);
+    
     ctx.status=204;
     return boardList;
   }
