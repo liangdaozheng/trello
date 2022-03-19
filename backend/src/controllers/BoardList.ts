@@ -28,11 +28,17 @@ export class BoardListController{
   ){
     let {boardId,name} = body;
     await getAndValidateBoard(boardId,ctx.userInfo.id);
+
+    let maxOrderBoardList = await BoardListModle.findOne({
+      where:{boardId},
+      order:[['order','desc']]
+    });
+
     let boardList = new BoardListModle();
     boardList.userId=ctx.userInfo.id;
     boardList.boardId=boardId;
     boardList.name=name;
-    boardList.order=65535;
+    boardList.order=maxOrderBoardList?maxOrderBoardList.order + 65535:65535;
     await boardList.save();
 
     ctx.status=201;
