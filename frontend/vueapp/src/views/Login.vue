@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       user: {
-        name:'zMouse',
+        name:'123',
         password:'123456'
       }
     }

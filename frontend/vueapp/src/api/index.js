@@ -47,3 +47,10 @@ export const getBoards = () =>{
     url:'/board',
   })
 }
+export const postBoard = (data) =>{
+  return axios({
+    method:"post",
+    url:'/board',
+    data,
+  })
+}

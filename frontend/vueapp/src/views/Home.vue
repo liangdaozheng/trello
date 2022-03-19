@@ -9,17 +9,22 @@
         我的看板
       </h2>
       <ul class="board-items">
-        <li class="board-item" 
+        <router-link
+        tag='li'
+         class="board-item" 
         v-for="(board,index) of boards"
          :key="index"
+         :to="{name:'Board',params:{id:board.id}}"
         >
           <span class="title">{{board.name}}</span>
-        </li>
+        </router-link>
         
         <li class="board-item create-new-board">
           <textarea
             class="title form-field-input"
             placeholder="创建新看板"
+            ref="newBoardName"
+            @blur="postBoard"
           ></textarea>
         </li>
       </ul>
@@ -43,6 +48,20 @@ export default {
     if(this.boards === null){
       this.$store.dispatch('board/getBoards');
     };
+  },
+  methods: {
+    postBoard() {
+      let val = this.$refs.newBoardName.value;
+      if(val.trim() !== ''){
+        try {
+          this.$store.dispatch('board/postBoard',{name:val});
+          this.$message.success('面板创建成功');
+          this.$refs.newBoardName.value='';
+        } catch (error) {
+          
+        }
+      };
+    }
   },
 }
 </script>
