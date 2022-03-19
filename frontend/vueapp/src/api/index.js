@@ -1,5 +1,6 @@
 import axios from "axios";
 import TMessage from '@/components/TMessage/TMessage.js'
+import board from "../store/board";
 axios.defaults.baseURL=process.env.VUE_APP_SERVER_API_PATH;
 
 axios.interceptors.request.use(configs=>{
@@ -51,6 +52,30 @@ export const postBoard = (data) =>{
   return axios({
     method:"post",
     url:'/board',
+    data,
+  })
+}
+export const getBoard = (id)=>{
+  return axios({
+    method:"get",
+    url:'/board/'+id,
+  })
+}
+// 获取列表
+ export const getLists= (boardId)=>{
+  return axios({
+    method:"get",
+    url:'/list',
+    params:{
+      boardId
+    }
+  })
+ }
+//  添加一个新列表
+export const postList = (data) =>{
+  return axios({
+    method:"post",
+    url:'/list',
     data,
   })
 }
