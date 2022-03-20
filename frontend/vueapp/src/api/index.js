@@ -124,3 +124,35 @@ export const putCard = (data) => {
     },
   })
 }
+// 上传附件 
+export const uploadAttachment = (data) => {
+  let fd = new FormData();
+  fd.append('boardListCardId',data.boardListCardId);
+  fd.append('attachment',data.file);
+  return axios({
+    method: "post",
+    url: '/card/attachment',
+    data:fd
+  })
+}
+// removeAttachment
+export const removeAttachment = (data) => {
+  return axios({
+    method: "delete",
+    url: '/card/attachment/'+data.id,
+  })
+}
+// setCover
+export const setCover = (data) => {
+  return axios({
+    method: "put",
+    url: '/card/attachment/cover/'+data.id,
+  })
+}
+// removeCover
+export const removeCover = (data) => {
+  return axios({
+    method: "delete",
+    url: '/card/attachment/cover/'+data.id,
+  })
+}

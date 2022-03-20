@@ -64,11 +64,12 @@
                     {{attachment.createdAt | dateTime}}
                   </span>
                   <span> - </span>
-                  <u>删除</u>
+                  <u @click="removeAttachment(attachment.id)">删除</u>
                 </span>
                 <span class="attachment-thumbnail-operation">
                   <i class="icon icon-card-cover"></i>
-                  <u>移除封面</u>
+                  <u v-if="attachment.isCover" @click="removeCover(attachment.id)">移除封面</u>
+                  <u v-else @click="setCover(attachment.id)">设为封面</u>
                 </span>
               </p>
             </li>
@@ -76,7 +77,8 @@
           </ul>
 
           <div>
-            <button class="btn btn-edit">添加附件</button>
+            <button class="btn btn-edit" @click="$refs.attachment.click()">添加附件</button>
+            <input type="file" ref="attachment" style="display:none" @change="uploadAttachment">
           </div>
         </div>
 
@@ -251,6 +253,53 @@ export default {
         } catch (error) {
           
         }
+      }
+    },
+    uploadAttachment(){
+      let file = this.$refs.attachment.files[0];
+      console.log(file);
+      try {
+        this.$store.dispatch('card/uploadAttachment',{
+          boardListCardId:this.card.id,
+          file
+        });
+        this.$refs.attachment.value = '';
+        this.$message.success('上传成功');
+      } catch (error) {
+        
+      }
+    },
+    setCover(id){
+      try {
+        this.$store.dispatch('card/setCover',{
+          cardId:this.card.id,
+          id
+        });
+        this.$message.success('设置成功');
+      } catch (error) {
+        
+      }
+    },
+    removeCover(id){
+      try {
+        this.$store.dispatch('card/removeCover',{
+          cardId:this.card.id,
+          id
+        });
+        this.$message.success('取消成功');
+      } catch (error) {
+        
+      }
+    },
+    removeAttachment(id){
+      try {
+        this.$store.dispatch('card/removeAttachment',{
+          cardId:this.card.id,
+          id
+        });
+        this.$message.success('删除成功');
+      } catch (error) {
+        
       }
     }
   },

@@ -25,6 +25,60 @@ export default {
         return card
       });
     },
+    addAttachment:(state,data)=>{
+      state.cards=state.cards.map(card =>{
+        if(card.id == data.boardListCardId){
+          return {
+            ...card,
+            attachments:[...card.attachments,data]
+          }
+        };
+        return card
+      });
+    },
+    setCover:(state,data)=>{
+      state.cards=state.cards.map(card =>{
+        if(card.id == data.cardId){
+          return {
+            ...card,
+            attachments:card.attachments.map(attachment=>{
+                return {
+                  ...attachment,
+                  isCover:attachment.id == data.id
+                }
+            })
+          }
+        };
+        return card
+      });
+    },
+    removeCover:(state,data)=>{
+      state.cards=state.cards.map(card =>{
+        if(card.id == data.cardId){
+          return {
+            ...card,
+            attachments:card.attachments.map(attachment=>{
+                return {
+                  ...attachment,
+                  isCover:false
+                }
+            })
+          }
+        };
+        return card
+      });
+    },
+    removeAttachment:(state,data)=>{
+      state.cards=state.cards.map(card =>{
+        if(card.id == data.cardId){
+          return {
+            ...card,
+            attachments:card.attachments.filter(attachment=> attachment.id != data.id)
+          }
+        };
+        return card
+      });
+    },
   },
   actions:{
     getCards:async ({commit},boardListId)=>{
@@ -50,6 +104,43 @@ export default {
         let rs = await api.putCard(data);
         // console.log(rs.data);
         commit('updateCard',data);
+        return rs;
+      } catch (error) {
+        throw error;
+      }
+    },
+    uploadAttachment: async ({commit},data)=>{
+      try {
+        let rs = await api.uploadAttachment(data);
+        console.log(rs.data);
+        commit('addAttachment',rs.data);
+        return rs;
+      } catch (error) {
+        throw error;
+      }
+    },
+    setCover:async ({commit},data)=>{
+      try {
+        let rs = await api.setCover(data);
+        commit('setCover',data);
+        return rs;
+      } catch (error) {
+        throw error;
+      }
+    },
+    removeCover:async ({commit},data)=>{
+      try {
+        let rs = await api.removeCover(data);
+        commit('removeCover',data);
+        return rs;
+      } catch (error) {
+        throw error;
+      }
+    },
+    removeAttachment:async ({commit},data)=>{
+      try {
+        let rs = await api.removeAttachment(data);
+        commit('removeAttachment',data);
         return rs;
       } catch (error) {
         throw error;
