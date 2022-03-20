@@ -1,93 +1,107 @@
 import axios from "axios";
 import TMessage from '@/components/TMessage/TMessage.js'
 import board from "../store/board";
-axios.defaults.baseURL=process.env.VUE_APP_SERVER_API_PATH;
+axios.defaults.baseURL = process.env.VUE_APP_SERVER_API_PATH;
 
-axios.interceptors.request.use(configs=>{
+axios.interceptors.request.use(configs => {
   try {
     let data = JSON.parse(localStorage.getItem('user'));
-    if(data.authorization){
-      configs.headers.common.authorization=data.authorization;
+    if (data.authorization) {
+      configs.headers.common.authorization = data.authorization;
     };
   } catch (error) {
-    
+
   }
   return configs;
 });
-axios.interceptors.response.use(response=>{
+axios.interceptors.response.use(response => {
   return response;
-},error=>{
-  let {message,errorDatails} = error.response.data;
-  if(errorDatails){
+}, error => {
+  let {
+    message,
+    errorDatails
+  } = error.response.data;
+  if (errorDatails) {
     message += ' : ' + errorDatails;
   }
   TMessage.error(message);
   throw error;
 })
 // 注册
-export const register= data=>{
+export const register = data => {
   return axios({
-    method:"post",
-    url:'/user/register',
+    method: "post",
+    url: '/user/register',
     data,
   })
 };
 // 登录
-export const login= data=>{
+export const login = data => {
   return axios({
-    method:"post",
-    url:'/user/login',
+    method: "post",
+    url: '/user/login',
     data,
   })
 };
 
 // 面板
-export const getBoards = () =>{
+export const getBoards = () => {
   return axios({
-    method:"get",
-    url:'/board',
+    method: "get",
+    url: '/board',
   })
 }
-export const postBoard = (data) =>{
+export const postBoard = (data) => {
   return axios({
-    method:"post",
-    url:'/board',
+    method: "post",
+    url: '/board',
     data,
   })
 }
-export const getBoard = (id)=>{
+export const getBoard = (id) => {
   return axios({
-    method:"get",
-    url:'/board/'+id,
+    method: "get",
+    url: '/board/' + id,
   })
 }
 // 获取列表
- export const getLists= (boardId)=>{
+export const getLists = (boardId) => {
   return axios({
-    method:"get",
-    url:'/list',
-    params:{
+    method: "get",
+    url: '/list',
+    params: {
       boardId
     }
   })
- }
+}
 //  添加一个新列表
-export const postList = (data) =>{
+export const postList = (data) => {
   return axios({
-    method:"post",
-    url:'/list',
+    method: "post",
+    url: '/list',
     data,
   })
 }
 // putList
-export const putList = (data) =>{
+export const putList = (data) => {
   return axios({
-    method:"put",
-    url:'/list/'+ data.id,
-    data:{
-      boardId:data.boardId,
-      name:data.name,
-      order:data.order,
+    method: "put",
+    url: '/list/' + data.id,
+    data: {
+      boardId: data.boardId,
+      name: data.name,
+      order: data.order,
     },
+  })
+}
+// cards
+
+export const getCards = (boardListId) => {
+  return axios({
+    method: "get",
+    url: '/card',
+    params: {
+      boardListId
+    }
   })
 }
