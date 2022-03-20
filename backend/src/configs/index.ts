@@ -1,4 +1,5 @@
 import databaseConfig from './database.json'
+import path from 'path';
 
 interface IDatabaseConfig {
   username: string;
@@ -17,7 +18,12 @@ const configs={
     jwt: {
         privateKey: 'liang'
     },
-    database:databaseConfig.development as IDatabaseConfig
+    database:databaseConfig.development as IDatabaseConfig,
+    storage: {
+      dir: path.resolve(__dirname, '../attachments'),
+      prefix: '/public/attachments'
+    }
+
   },
   test:{
     server:{
@@ -27,7 +33,11 @@ const configs={
     jwt: {
         privateKey: 'liang'
     },
-    database:databaseConfig.test as IDatabaseConfig
+    database:databaseConfig.test as IDatabaseConfig,
+    storage: {
+      dir: path.resolve(__dirname, '../attachments'),
+      prefix: '/public/attachments'
+    }
   },
   production:{
     server:{
@@ -37,7 +47,11 @@ const configs={
     jwt: {
         privateKey: 'liang'
     },
-    database:databaseConfig.production as IDatabaseConfig
+    database:databaseConfig.production as IDatabaseConfig,
+    storage: {
+      dir: path.resolve(__dirname, '../attachments'),
+      prefix: '/public/attachments'
+    }
   },
 };
 type configKeys = keyof typeof configs;
