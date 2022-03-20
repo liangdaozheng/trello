@@ -13,9 +13,7 @@ import {User as UserModel} from '../models/User';
 @Flow([authorization])
 export class CommentController {
 
-    /**
-     * 添加评论
-     */
+    // 添加评论
     @Post('')
     public async addComment(
         @Ctx() ctx: Context,
@@ -38,9 +36,7 @@ export class CommentController {
 
     }
 
-    /**
-     * 获取评论
-     */
+    // 获取评论
     @Get('')
     public async getComments(
         @Ctx() ctx: Context,

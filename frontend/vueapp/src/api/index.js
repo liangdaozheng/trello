@@ -156,3 +156,18 @@ export const removeCover = (data) => {
     url: '/card/attachment/cover/'+data.id,
   })
 }
+// 获取评论
+export const getComments = params =>{
+  return axios({
+    method: "get",
+    url: '/comment',
+    params
+  })
+}
+export const postComment = data =>{
+  return axios({
+    method: "post",
+    url: '/comment',
+    data
+  })
+}

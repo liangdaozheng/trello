@@ -3,7 +3,7 @@
     <div
       v-if="data.coverPath"
       class="list-card-cover"
-      :style="'background-image: url(' + data.coverPath + ');'"
+      :style="'background-image: url('+ server.staticPath + data.coverPath + ');'"
     ></div>
     <div class="list-card-title">{{ data.name }}</div>
     <div class="list-card-badges">
@@ -27,6 +27,11 @@ export default {
   props: {
     data: {
       type: Object,
+    },
+  },
+  computed: {
+    server(){
+      return this.$store.state.server
     },
   },
 }

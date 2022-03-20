@@ -6,6 +6,7 @@ import user from './user'
 import board from './board'
 import list from './list'
 import card from './card'
+import comment from './comment'
 
 export default new Vuex.Store({
   state: {
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     user,
     board,
     list,
-    card
+    card,
+    comment
   }
 })
