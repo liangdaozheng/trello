@@ -6,7 +6,7 @@ module.exports = {
         let password = md5.update('123456').digest('hex');
         let date = new Date();
 
-        return queryInterface.bulkInsert('User', ['zMouse', 'mt', 'leo', 'reci'].map((name, index) => {
+        return queryInterface.bulkInsert('User', ['liang', 'dao', 'zheng', 'reci'].map((name, index) => {
             return {
                 id: index + 1,
                 name,
