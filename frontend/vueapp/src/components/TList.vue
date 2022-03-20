@@ -1,7 +1,7 @@
 <template>
   <div
     class="list-wrap list-wrap-content"
-    :class="{ 'list-adding': false }"
+    :class="{ 'list-adding': listAdding }"
     :data-order="data.order"
   >
     <div class="list-placeholder" ref="listPlaceholder"></div>
@@ -44,58 +44,44 @@
           </div>
         </div> -->
 
-        <div class="list-card" v-for="card of cards" :key="card.id">
-          <div v-if="card.coverPath"
-            class="list-card-cover"
-            :style="'background-image: url('+card.coverPath+');'"
-          ></div>
-          <div class="list-card-title">{{card.name}}</div>
-          <div class="list-card-badges">
-            <div class="badge" v-if="card.description">
-              <span class="icon icon-description"></span>
-            </div>
-            <div class="badge" v-if="card.commentCount > 0">
-              <span class="icon icon-comment"></span>
-              <span class="text">{{card.commentCount}}</span>
-            </div>
-            <div class="badge" v-if="card.attachments.length > 0">
-              <span class="icon icon-attachment"></span>
-              <span class="text">{{card.attachments.length}}</span>
-            </div>
-          </div>
-        </div>
-
-
-        
-
+        <t-card
+         v-for="card of cards"
+         :key="card.id"
+         :data="card"
+        ></t-card>
         <div class="list-card-add-form">
           <textarea
             class="form-field-input"
             placeholder="为这张卡片添加标题……"
+            ref="newListName"
           ></textarea>
         </div>
       </div>
 
       <div class="list-footer">
-        <div class="list-card-add">
+        <div class="list-card-add" @click="showListCardAddForm">
           <span class="icon icon-add"></span>
           <span>添加另一张卡片</span>
         </div>
         <div class="list-add-confirm">
-          <button class="btn btn-success">添加卡片</button>
-          <span class="icon icon-close"></span>
+          <button class="btn btn-success" @click="addNewCard">添加卡片</button>
+          <span class="icon icon-close" @click="hideListCardAddForm"></span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import TCard from '@/components/TCard'
 export default {
   name: "TList",
   props: {
     data: {
       type: Object,
     },
+  },
+  components: {
+    TCard,
   },
   data() {
     return {
@@ -107,6 +93,7 @@ export default {
         downElementX: 0,
         downElementY: 0,
       },
+      listAdding:false
     };
   },
   computed: {
@@ -199,6 +186,36 @@ export default {
         });
       }
     },
+    // 添加列表
+    showListCardAddForm(){
+      this.listAdding = true;
+      this.$nextTick(()=>{
+        this.$refs.newListName.focus();
+      })
+    },
+    hideListCardAddForm(){
+      this.listAdding = false;
+      this.$refs.newListName.value = '';
+    },
+    addNewCard(){
+      let {value} = this.$refs.newListName;
+      if(value.trim() !== ''){
+        try {
+          this.$store.dispatch('card/postCard',{
+            name:value,
+            boardListId:this.data.id
+          });
+          this.$message.success('添加成功');
+          this.$refs.newListName.value = '';
+          this.listAdding = false;
+        } catch (error) {
+          
+        }
+      }else{
+        this.$refs.newListName.focus();
+      }
+    }
+
   },
 };
 </script>

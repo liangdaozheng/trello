@@ -9,6 +9,9 @@ import card from './card'
 
 export default new Vuex.Store({
   state: {
+    server:{
+      staticPath:process.env.VUE_APP_SERVER_STATIC_PATH
+    }
   },
   mutations: {
   },

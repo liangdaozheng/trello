@@ -38,7 +38,7 @@ export class BoardListCardController{
     boardListCard.userId = ctx.userInfo.id;
     boardListCard.boardListId = boardListId;
     boardListCard.name = name;
-    boardListCard.description =  boardListCard.description;
+    boardListCard.description =  boardListCard.description || '';
     await boardListCard.save();
     ctx.status=201;
     return boardListCard;
@@ -110,7 +110,7 @@ export class BoardListCardController{
     
     return boardListCard;
   }
-  @Put('/id:(\\d+)')
+  @Put('/:id(\\d+)')
   public async putCard(
     @Ctx() ctx:Context,
     @Params('id') id:number,

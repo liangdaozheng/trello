@@ -105,3 +105,22 @@ export const getCards = (boardListId) => {
     }
   })
 }
+export const postCard = (data) => {
+  return axios({
+    method: "post",
+    url: '/card',
+    data
+  })
+}
+export const putCard = (data) => {
+  return axios({
+    method: "put",
+    url: '/card/' + data.id,
+    data: {
+      boardListId: data.boardListId,
+      name: data.name,
+      order: data.order,
+      description:data.description
+    },
+  })
+}

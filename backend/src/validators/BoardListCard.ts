@@ -15,7 +15,7 @@ export class PostAddCardBody {
     message:'最大255字符'
   })
   name:string
-  @ValidateIf(o=>o.description === undefined)
+  @ValidateIf(o=>o.description !== undefined)
   @MaxLength(2000,{
     message:'最大2000字符'
   })
@@ -29,22 +29,22 @@ export class GetCardsQuery{
 }
 
 export class PutUpdateCardBody{
-  @ValidateIf(o=>o.boardListId === undefined)
+  @ValidateIf(o=>o.boardListId !== undefined)
   @Min(1,{
     message:'Id不能为空且必须为数字'
   })
   boardListId?:number
-  @ValidateIf(o=>o.name === undefined)
+  @ValidateIf(o=>o.name !== undefined)
   @MaxLength(255,{
     message:'最大255字符'
   })
   name?:string
-  @ValidateIf(o=>o.description === undefined)
+  @ValidateIf(o=>o.description !== undefined)
   @MaxLength(2000,{
     message:'最大2000字符'
   })
   description?:string
-  @ValidateIf(o=>o.order === undefined)
+  @ValidateIf(o=>o.order !== undefined)
   @IsNumber({},{
     message:'必须为数字'
   })

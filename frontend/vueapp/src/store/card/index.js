@@ -7,21 +7,22 @@ export default {
     cards:[]
   },
   getters:{
-    getCards:({cards})=>boardListId=>cards.filter(card=>card.boardListId === boardListId)
+    getCards:({cards})=>boardListId=>cards.filter(card=>card.boardListId === boardListId),
+    getCard:({cards})=>cardId=>cards.find(card=>card.id === cardId)
   },
   mutations:{
     updateCards:(state,datas)=>{
       state.cards=[...state.cards,...datas];
     },
-    addList:(state,data)=>{
+    addCard:(state,data)=>{
       state.cards=[...state.cards,data];
     },
-    updateList:(state,data)=>{
-      state.cards=state.cards.map(list =>{
-        if(list.id === data.id){
-          return data
+    updateCard:(state,data)=>{
+      state.cards=state.cards.map(card =>{
+        if(card.id === data.id){
+          return {...card,...data}
         };
-        return list
+        return card
       });
     },
   },
@@ -30,6 +31,25 @@ export default {
       try {
         let rs = await api.getCards(boardListId);
         commit('updateCards',rs.data);
+        return rs;
+      } catch (error) {
+        throw error;
+      }
+    },
+    postCard:async ({commit},data)=>{
+      try {
+        let rs = await api.postCard(data);
+        commit('addCard',rs.data);
+        return rs;
+      } catch (error) {
+        throw error;
+      }
+    },
+    editCard: async ({commit},data)=>{
+      try {
+        let rs = await api.putCard(data);
+        // console.log(rs.data);
+        commit('updateCard',data);
         return rs;
       } catch (error) {
         throw error;

@@ -8,12 +8,20 @@ import KoaBodyParser from 'koa-bodyparser';
 import Boom from '@hapi/Boom';
 import {Sequelize} from 'sequelize-typescript'
 import jwt from 'jsonwebtoken';
+import KoaStaticCache from 'koa-static-cache';
 
 (async () => {
 
   const app = new Koa();
 
   const router=new KoaRouter();
+  // 静态资源代理
+  app.use(KoaStaticCache({
+      dir: configs.storage.dir,
+      prefix: configs.storage.prefix,
+      gzip: true,
+      dynamic: true
+  }));
 
   // 连接数据库
   const db=new Sequelize({
