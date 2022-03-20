@@ -45,24 +45,22 @@
         </div> -->
 
         <div class="list-card" v-for="card of cards" :key="card.id">
-          <div
+          <div v-if="card.coverPath"
             class="list-card-cover"
-            style="
-              background-image: url(https://trello-attachments.s3.amazonaws.com/5ddf961b5e861107e5f2de49/200x200/96d8fa19e335be20c102d394ef4bed71/logo.png);
-            "
+            :style="'background-image: url('+card.coverPath+');'"
           ></div>
           <div class="list-card-title">{{card.name}}</div>
           <div class="list-card-badges">
             <div class="badge" v-if="card.description">
               <span class="icon icon-description"></span>
             </div>
-            <div class="badge">
+            <div class="badge" v-if="card.commentCount > 0">
               <span class="icon icon-comment"></span>
-              <span class="text">2</span>
+              <span class="text">{{card.commentCount}}</span>
             </div>
-            <div class="badge">
+            <div class="badge" v-if="card.attachments.length > 0">
               <span class="icon icon-attachment"></span>
-              <span class="text">5</span>
+              <span class="text">{{card.attachments.length}}</span>
             </div>
           </div>
         </div>
